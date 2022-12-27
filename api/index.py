@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
+import cgi
 
 class handler(BaseHTTPRequestHandler):
 
@@ -17,3 +18,18 @@ class handler(BaseHTTPRequestHandler):
 
 		self.wfile.write(message.encode())
 		return
+
+	def do_POST(self):
+		try:
+			s = self.path
+			ctype, pdict = cgi.parse_header(self.headers['content-type'])
+			print(ctype)
+			print(pdict)
+			self.end_headers()
+			# pdict['boundary'] = bytes(pdict['boundary'], "utf-8")
+			# if ctype == 'multipart/form-data':
+			# 	fields = cgi.parse_multipart(self.rfile, pdict)
+			# 	restaurant_name = fields.get('newRestaurantName')
+				
+		except:
+			print("Inside the exception block")
